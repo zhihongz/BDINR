@@ -3,7 +3,7 @@
 
 [This repository](https://github.com/zhihongz/BDINR) contains the PyTorch code for our paper "Lightweight High-Speed Photography Built on Coded Exposure and Implicit Neural Representation of Videos" by [Zhihong Zhang](https://zhihongz.github.io/), Runzhao Yang, Jinli Suo, Yuxiao Cheng, and Qionghai Dai.
 
-> [paper]() | [arxiv]()
+> [paper]() | [arxiv](https://arxiv.org/abs/2311.13134)
 
 **The code will come soon!**
 
