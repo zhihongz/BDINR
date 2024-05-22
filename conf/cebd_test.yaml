@@ -1,0 +1,42 @@
+##### hydra
+hydra:
+    run:
+      dir: ./outputs/${exp_name}/${status}/${now:%Y-%m-%d}_${now:%H-%M-%S}
+    sweep:
+      dir: ./outputs/${exp_name}/${status}/${now:%Y-%m-%d}_${now:%H-%M-%S}
+      subdir: ${hydra.job.override_dirname}
+
+##### dir
+exp_name: code_dev/BDNeRV_RC  # experiment name
+tester_name: cebd_tester      # tester name
+status: test                  # run status
+checkpoint: ${hydra:runtime.cwd}/checkpoints/model.pth  # loading checkpoint ${hydra:runtime.cwd}
+outputs_dir: outputs/
+
+##### run
+gpus: [3]             # GPU used, Warning: Only one GPU is supported for 'test' now
+num_workers: 2        # number of cpu worker
+save_img: true       # save the reconstructed images
+
+# params
+frame_n: 8
+sigma_range: [0,0.01]
+trainer:
+  epochs: 500
+
+##### metrics
+metrics:
+  - _target_: srcs.metric.metric_iqa.IQA_Metric
+    metric_name: psnr
+  - _target_: srcs.metric.metric_iqa.IQA_Metric
+    metric_name: ssim
+  - _target_: srcs.metric.metric_iqa.IQA_Metric
+    metric_name: lpips
+
+##### data&nets
+defaults:
+  - data: vid_test_data
+  - network: cebd
+  - override hydra/job_logging : custom
+  - override hydra/hydra_logging: colorlog
+  - _self_

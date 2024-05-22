@@ -1,0 +1,13 @@
+# @package test_data_loader
+_target_: srcs.data_loader._my_video_data_loaders.get_data_loaders
+data_dir: ${hydra:runtime.cwd}/dataset/GoPro_demo/  # video
+frame_num: ${frame_n}
+batch_size: 1
+patch_size: ~
+tform_op:
+status: ${status}
+shuffle: False
+num_workers: ${num_workers}
+pin_memory: True
+prefetch_factor: 2
+all2CPU: False

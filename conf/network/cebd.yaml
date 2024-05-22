@@ -1,0 +1,31 @@
+# @package _global_
+network_name: cebd
+arch:
+  _target_: srcs.model.cebd_model.CEBDNet
+  sigma_range: ${sigma_range}
+  ce_code_n: 8
+  frame_n: ${frame_n}
+  ce_code_init: [1,1,1,0,0,1,0,1] # raskar8-03
+  opt_cecode: false
+  ce_net: CEBlurNet
+  binary_fc: STEBinary_fc
+  bd_net: BDNeRV_RC
+loss: {'main_loss':1, 'reblur_loss':0.2}
+main_loss:
+  _target_: srcs.loss._pix_loss_cls.WeightedLoss
+  loss_conf_dict: {'CharbonnierLoss':1.0, 'SSIMLoss':0.05, 'EdgeLoss':0.05}
+reblur_loss:
+  _target_: srcs.loss._pix_loss_cls.CharbonnierLoss
+
+optimizer:
+  _target_: srcs.optimizer.adan.Adan
+  lr: !!float 5e-4
+lr_scheduler:
+  _target_: srcs.scheduler._base_scheduler.getGradualWarmupScheduler
+  multiplier: 1
+  warmup_epochs: 2
+  after_scheduler_conf:
+    type: torch.optim.lr_scheduler.CosineAnnealingLR
+    args:
+      T_max: ${trainer.epochs}
+      eta_min: 1e-6

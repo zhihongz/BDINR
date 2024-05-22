@@ -5,28 +5,40 @@
 
 > [paper]() | [arxiv](https://arxiv.org/abs/2311.13134)
 
-**The code will come soon!**
 
 
-## Introduction
+## 📖 Introduction
 
 ![](asset/BDINR.png)
 
-Restoring motion from blur is a challenging task due to the high ill-posedness of motion blur decomposition, intrinsic ambiguity in motion direction, and diverse motions in natural videos. In this work, by leveraging classical coded exposure imaging technique and emerging implicit neural representation for videos, we tactfully embed the motion direction cues into the blurry image during the imaging process and develop a novel self-recursive neural network to sequentially retrieve the latent video sequence from the blurry image utilizing the embedded motion direction cues. 
+Restoring motion from blur is a challenging task due to the inherent ill-posedness of motion blur decomposition, the intrinsic ambiguity in motion direction, and the diverse motions present in natural videos. In this work, by leveraging classical coded exposure imaging technique and emerging implicit neural representation for videos, we tactfully embed the motion direction cues into the blurry image during the imaging process and develop a novel self-recursive neural network to sequentially retrieve the latent video sequence from the blurry image utilizing the embedded motion direction cues. 
 
 
-## Requirements
+## 🧰 Requirements
 
 Please refer to [requirements.txt](./requirements.txt).
 
-## How to run
+## 🚅 How to run
+
+#### Training
+
+change the configuration files in `conf/` and run the following command:
 
 ```bash
-python main.py
+python train.py
 ```
 
+#### Testing
 
-## Citation
+change the configuration files in `conf/` and run the following command:
+
+> Your should be able to directly run the following command with the provided pre-trained model for a quick demonstration.
+
+```bash
+python test.py
+```
+
+## 🔖 Citation
 
 ```
 @article{YourName,
@@ -36,7 +48,3 @@ python main.py
   year={Year}
 }
 ```
-
-## Reference
-
-- [ENeRV](https://github.com/kyleleey/E-NeRV)

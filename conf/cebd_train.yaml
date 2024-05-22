@@ -1,0 +1,53 @@
+##### hydra
+hydra:
+    run:
+      dir: ./outputs/${exp_name}/${status}/${now:%Y-%m-%d}_${now:%H-%M-%S}
+    sweep:
+      dir: ./outputs/${exp_name}/${status}/${now:%Y-%m-%d}_${now:%H-%M-%S}
+      subdir: ${hydra.job.override_dirname}
+
+##### dir
+exp_name: code_dev/BDNeRV_RC  # experiment name
+trainer_name: cebd_trainer    # trainer name
+status: train                 # run status
+resume_conf:                  # resume configuration, default=[epoch, optimizer]
+resume:                       # resuming checkpoint path (${hydra:runtime.cwd}/ )
+checkpoint_dir: checkpoints/  # models saving dir (relative to $dir)
+final_test_dir: final_test/   # final test result saving dir (relative to $dir)
+log_dir: events/              # log file save dir (relative to $dir)
+
+
+##### run
+gpus: [3]                     # GPU used, [0,1] | empty (all gpu)
+num_workers: 2                # number of cpu worker
+trainer:
+  epochs: 500
+  limit_train_iters: 500      # maximal trainning batches: empty for all
+  limit_valid_iters:  50      # maximal validation batches: empty for all
+  monitor: min loss/valid     # monitor for early stop: max calc_psnr/valid | min loss/valid
+  saving_top_k: 5             # save top k checkpoints (best checkpoints saved separately)
+  landmark_list: [100,200,300,400] # save landmark checkpoints assigned by this list
+  early_stop: # 80            # stop if no improvement in consecutive $early_stop epochs
+  logging_step: 1000          # one log / $logging_step iteration
+  tensorboard: true           # use tensorboard for training log
+  log_weight: true            # log weight in tensorboard
+  final_test: false           # do test after the training
+
+# params
+sigma_range: [0,0.01] # train noise
+frame_n: 8 
+
+##### metrics
+metrics:
+  - _target_: srcs.metric.metric_iqa.IQA_Metric
+    metric_name: psnr
+  - _target_: srcs.metric.metric_iqa.IQA_Metric
+    metric_name: ssim
+
+##### data&nets
+defaults:
+  - data: vid_train_data
+  - network: cebd
+  - override hydra/job_logging : custom
+  - override hydra/hydra_logging: colorlog
+  - _self_

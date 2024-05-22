@@ -1,0 +1,13 @@
+# @package data_loader
+_target_: srcs.data_loader._my_video_data_loaders.get_data_loaders
+data_dir: /ssd/0/zzh/dataset/GoPro/GOPRO_Large_all/train/  # video
+frame_num: ${frame_n}
+batch_size: 8
+patch_size: 256
+tform_op: 'all'
+status: 'train'
+shuffle: true
+num_workers: ${num_workers}
+pin_memory: true
+prefetch_factor: 1
+all2CPU: false
